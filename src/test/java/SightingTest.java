@@ -67,9 +67,9 @@ public class SightingTest {
 
   @Test
   public void save_StoresAMeaningfulTimeStamp_true(){
-    assertTrue(testSighting.getTimeSighted() instanceof Timestamp);
+    assertTrue(testSighting.getTime_sighted() instanceof Timestamp);
     Timestamp rightNow = new Timestamp(new Date().getTime());
-    assertEquals(rightNow.getDate(), testSighting.getTimeSighted().getDate());
+    assertEquals(rightNow.getDate(), testSighting.getTime_sighted().getDate());
   }
 
 }

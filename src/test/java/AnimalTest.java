@@ -90,10 +90,6 @@ public class AnimalTest {
 
   @Test
   public void getSightings_returnsAListOfSightings_true(){
-    // Animal testAnimal = new Animal("Deer");
-    // testAnimal.save();
-    // Animal secondAnimal = new Animal("Black Bear");
-    // secondAnimal.save();
     Sighting testSighting = new Sighting(testAnimal.getId(), "45.472428, -121.946466", "Ranger Avery");
     Sighting secondTestSighting = new Sighting (testAnimal.getId(), "45.472428, -121.946466", "Ranger Reese");
     testSighting.save();

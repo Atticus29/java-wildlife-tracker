@@ -62,7 +62,18 @@ public class EndangeredAnimalTest {
 
   @Test
   public void endangeredAnimal_setsTypeToEndangeredInConstructor_true(){
+    assertEquals("endangered", testEndangeredAnimal.getType());
+  }
 
+  @Test
+  public void getSightings_returnsAListOfSightings_true(){
+    Sighting testSighting = new Sighting(testEndangeredAnimal.getId(), "45.472428, -121.946466", "Ranger Avery");
+    Sighting secondTestSighting = new Sighting (testEndangeredAnimal.getId(), "45.472428, -121.946466", "Ranger Reese");
+    testSighting.save();
+    secondTestSighting.save();
+    List<Sighting> allSightings = testEndangeredAnimal.getSightings();
+    assertEquals(2, allSightings.size());
+    assertEquals(secondTestSighting,allSightings.get(1));
   }
 
 }

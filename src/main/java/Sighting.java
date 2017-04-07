@@ -10,7 +10,7 @@ public class Sighting {
   private String location;
   private String ranger_name;
   private int id;
-  private Timestamp timeSighted;
+  private Timestamp time_sighted;
 
   public Sighting(int animal_id, String location, String ranger_name) {
     this.animal_id = animal_id;
@@ -23,8 +23,12 @@ public class Sighting {
     return id;
   }
 
-  public Timestamp getTimeSighted(){
-    return this.timeSighted;
+  public Timestamp getTime_sighted(){
+    return this.time_sighted;
+  }
+
+  public String getTime_sightedAsString(){
+    return this.time_sighted.toGMTString();
   }
 
   public int getAnimalId() {
@@ -62,8 +66,9 @@ public class Sighting {
       String timeSql = "SELECT time_sighted FROM sightings WHERE id=:id;";
         Timestamp sightTime = con.createQuery(timeSql)
           .addParameter("id", this.id)
+          .throwOnMappingFailure(false)
           .executeAndFetchFirst(Timestamp.class);
-        this.timeSighted = sightTime;  
+        this.time_sighted = sightTime;
     }
   }
 
