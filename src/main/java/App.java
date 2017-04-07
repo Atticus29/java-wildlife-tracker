@@ -29,7 +29,7 @@ public class App {
       sighting.save();
       model.put("sighting", sighting);
       model.put("animals", EndangeredAnimal.allEndangered());
-      String animal = EndangeredAnimal.findAnimal(animalIdSelected).getName();
+      String animal = EndangeredAnimal.findEndangered(animalIdSelected).getName();
       model.put("animal", animal);
       model.put("template", "templates/success.vtl");
       return new ModelAndView(model, layout);
