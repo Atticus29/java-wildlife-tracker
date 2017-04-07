@@ -75,4 +75,18 @@ public class AnimalTest {
     assertTrue(Animal.find(999) == null);
   }
 
+  @Test
+  public void getSightings_returnsAListOfSightings_true(){
+    Animal testAnimal = new Animal("Deer");
+    testAnimal.save();
+    // Animal secondAnimal = new Animal("Black Bear");
+    // secondAnimal.save();
+    Sighting testSighting = new Sighting(testAnimal.getId(), "45.472428, -121.946466", "Ranger Avery");
+    Sighting secondTestSighting = new Sighting (testAnimal.getId(), "45.472428, -121.946466", "Ranger Reese");
+    // ...
+    List<Sighting> allSightings = Animal.getSightings();
+    assertEquals(2, allSightings.size());
+    assertEquals(secondTestSighting,allSightings.get(1).get);
+  }
+
 }

@@ -5,10 +5,12 @@ import java.util.List;
 public class Animal {
   public String name;
   public int id;
+  public String type;
 
   public Animal(String name) {
     this.name = name;
-    this.id = id;
+    this.type = "not endangered";
+    // this.id = id;
   }
 
   public String getName() {
@@ -31,9 +33,11 @@ public class Animal {
 
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO animals (name) VALUES (:name);";
+      String sql = "INSERT INTO animals (type, name) VALUES (:type, :name);";
       this.id = (int) con.createQuery(sql, true)
+        .addParameter("type", this.type)
         .addParameter("name", this.name)
+        .throwOnMappingFailure(false)
         .executeUpdate()
         .getKey();
     }
