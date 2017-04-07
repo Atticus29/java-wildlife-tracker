@@ -2,12 +2,15 @@ import org.sql2o.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.sql.Timestamp;
+import java.util.Date;
 
 public class Sighting {
   private int animal_id;
   private String location;
   private String ranger_name;
   private int id;
+  private Timestamp timeSighted;
 
   public Sighting(int animal_id, String location, String ranger_name) {
     this.animal_id = animal_id;
@@ -18,6 +21,10 @@ public class Sighting {
 
   public int getId() {
     return id;
+  }
+
+  public Timestamp getTimeSighted(){
+    return this.timeSighted;
   }
 
   public int getAnimalId() {
@@ -44,7 +51,7 @@ public class Sighting {
 
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO sightings (animal_id, location, ranger_name) VALUES (:animal_id, :location, :ranger_name);";
+      String sql = "INSERT INTO sightings (time_sighted, animal_id, location, ranger_name) VALUES (now(), :animal_id, :location, :ranger_name);";
       this.id = (int) con.createQuery(sql, true)
         .addParameter("animal_id", this.animal_id)
         .addParameter("location", this.location)
@@ -52,6 +59,11 @@ public class Sighting {
         .throwOnMappingFailure(false)
         .executeUpdate()
         .getKey();
+      String timeSql = "SELECT time_sighted FROM sightings WHERE id=:id;";
+        Timestamp sightTime = con.createQuery(timeSql)
+          .addParameter("id", this.id)
+          .executeAndFetchFirst(Timestamp.class);
+        this.timeSighted = sightTime;  
     }
   }
 

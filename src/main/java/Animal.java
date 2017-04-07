@@ -92,6 +92,7 @@ public class Animal {
       String sql = "SELECT * FROM sightings WHERE animal_id=:id;";
         List<Sighting> sightings = con.createQuery(sql)
           .addParameter("id", this.id)
+          .throwOnMappingFailure(false)
           .executeAndFetch(Sighting.class);
       return sightings;
     }

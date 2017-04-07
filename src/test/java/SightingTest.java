@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.text.DateFormat;
 import java.util.Date;
+import java.sql.Timestamp;
 
 public class SightingTest {
   private Sighting testSighting;
@@ -62,6 +63,13 @@ public class SightingTest {
   @Test
   public void findAnimal_returnsNullWhenNoAnimalFound_null() {
     assertTrue(Animal.findAnimal(999) == null);
+  }
+
+  @Test
+  public void save_StoresAMeaningfulTimeStamp_true(){
+    assertTrue(testSighting.getTimeSighted() instanceof Timestamp);
+    Timestamp rightNow = new Timestamp(new Date().getTime());
+    assertEquals(rightNow.getDate(), testSighting.getTimeSighted().getDate());
   }
 
 }
