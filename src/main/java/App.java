@@ -13,8 +13,8 @@ public class App {
 
     get("/", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
-      model.put("animals", Animal.all());
-      model.put("endangeredAnimals", EndangeredAnimal.all());
+      model.put("animals", Animal.allAnimal());
+      model.put("endangeredAnimals", EndangeredAnimal.allEndangered());
       model.put("sightings", Sighting.all());
       model.put("template", "templates/index.vtl");
       return new ModelAndView(model, layout);
@@ -28,8 +28,8 @@ public class App {
       Sighting sighting = new Sighting(animalIdSelected, latLong, rangerName);
       sighting.save();
       model.put("sighting", sighting);
-      model.put("animals", EndangeredAnimal.all());
-      String animal = EndangeredAnimal.find(animalIdSelected).getName();
+      model.put("animals", EndangeredAnimal.allEndangered());
+      String animal = EndangeredAnimal.findAnimal(animalIdSelected).getName();
       model.put("animal", animal);
       model.put("template", "templates/success.vtl");
       return new ModelAndView(model, layout);
@@ -43,8 +43,8 @@ public class App {
       Sighting sighting = new Sighting(animalIdSelected, latLong, rangerName);
       sighting.save();
       model.put("sighting", sighting);
-      model.put("animals", Animal.all());
-      String animal = Animal.find(animalIdSelected).getName();
+      model.put("animals", Animal.allAnimal());
+      String animal = Animal.findAnimal(animalIdSelected).getName();
       model.put("animal", animal);
       model.put("template", "templates/success.vtl");
       return new ModelAndView(model, layout);
@@ -52,8 +52,8 @@ public class App {
 
     get("/animal/new", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
-      model.put("animals", Animal.all());
-      model.put("endangeredAnimals", EndangeredAnimal.all());
+      model.put("animals", Animal.allAnimal());
+      model.put("endangeredAnimals", EndangeredAnimal.allEndangered());
       model.put("template", "templates/animal-form.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
@@ -67,14 +67,14 @@ public class App {
         String age = request.queryParams("age");
         EndangeredAnimal endangeredAnimal = new EndangeredAnimal(name, health, age);
         endangeredAnimal.save();
-        model.put("animals", Animal.all());
-        model.put("endangeredAnimals", EndangeredAnimal.all());
+        model.put("animals", Animal.allAnimal());
+        model.put("endangeredAnimals", EndangeredAnimal.allEndangered());
       } else {
         String name = request.queryParams("name");
         Animal animal = new Animal(name);
         animal.save();
-        model.put("animals", Animal.all());
-        model.put("endangeredAnimals", EndangeredAnimal.all());
+        model.put("animals", Animal.allAnimal());
+        model.put("endangeredAnimals", EndangeredAnimal.allEndangered());
       }
       response.redirect("/");
         return null;
@@ -82,7 +82,7 @@ public class App {
 
     get("/animal/:id", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
-      Animal animal = Animal.find(Integer.parseInt(request.params("id")));
+      Animal animal = Animal.findAnimal(Integer.parseInt(request.params("id")));
       model.put("animal", animal);
       model.put("template", "templates/animal.vtl");
       return new ModelAndView(model, layout);
@@ -90,7 +90,7 @@ public class App {
 
     get("/endangered_animal/:id", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
-      EndangeredAnimal endangeredAnimal = EndangeredAnimal.find(Integer.parseInt(request.params("id")));
+      EndangeredAnimal endangeredAnimal = EndangeredAnimal.findEndangered(Integer.parseInt(request.params("id")));
       model.put("endangeredAnimal", endangeredAnimal);
       model.put("template", "templates/endangered_animal.vtl");
       return new ModelAndView(model, layout);

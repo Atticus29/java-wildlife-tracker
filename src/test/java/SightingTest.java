@@ -66,8 +66,8 @@ public class SightingTest {
   }
 
   @Test
-  public void find_returnsNullWhenNoAnimalFound_null() {
-    assertTrue(Animal.find(999) == null);
+  public void findAnimal_returnsNullWhenNoAnimalFound_null() {
+    assertTrue(Animal.findAnimal(999) == null);
   }
 
 }

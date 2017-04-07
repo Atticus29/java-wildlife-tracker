@@ -21,6 +21,10 @@ public class Animal {
     return id;
   }
 
+  public String getType(){
+    return this.type;
+  }
+
   @Override
   public boolean equals(Object otherAnimal) {
     if(!(otherAnimal instanceof Animal)) {
@@ -43,18 +47,21 @@ public class Animal {
     }
   }
 
-  public static List<Animal> all() {
+  public static List<Animal> allAnimal() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT * FROM animals;";
+      // String sql = "SELECT * FROM animals;";
+      String sql = "SELECT * FROM animals WHERE type='not endangered';";
       return con.createQuery(sql)
+        .throwOnMappingFailure(false)
         .executeAndFetch(Animal.class);
     }
   }
 
-  public static Animal find(int id) {
+  public static Animal findAnimal(int id) {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT * FROM animals WHERE id=:id;";
+      String sql = "SELECT * FROM animals WHERE id=:id AND type='not endangered';";
       Animal animal = con.createQuery(sql)
+        .throwOnMappingFailure(false)
         .addParameter("id", id)
         .executeAndFetchFirst(Animal.class);
       return animal;
@@ -84,7 +91,7 @@ public class Animal {
     try(Connection con = DB.sql2o.open()) {
       String sql = "SELECT * FROM sightings WHERE animal_id=:id;";
         List<Sighting> sightings = con.createQuery(sql)
-          .addParameter("id", id)
+          .addParameter("id", this.id)
           .executeAndFetch(Sighting.class);
       return sightings;
     }

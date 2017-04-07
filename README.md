@@ -12,7 +12,7 @@ To create the necessary databases, launch postgres, then psql, and run the follo
 
 * `CREATE DATABASE wildlife_tracker;`
 * `\c wildlife_tracker;`
-* `CREATE TABLE animals (id serial PRIMARY KEY, type varchar, name varchar, name varchar, health varchar, age varchar);`
+* `CREATE TABLE animals (id serial PRIMARY KEY, type varchar, name varchar, health varchar, age varchar);`
 * `CREATE TABLE sightings (id serial PRIMARY KEY, animal_id int, location varchar, ranger_name varchar);`
 * `CREATE DATABASE wildlife_tracker_test WITH TEMPLATE wildlife_tracker;`
 

@@ -9,8 +9,6 @@ public class EndangeredAnimal extends Animal {
 
   public EndangeredAnimal(String name, String health, String age) {
     super(name);
-    // this.name = name;
-    // this.id = id;
     this.health = health;
     this.age = age;
     this.endangered = true;
@@ -49,15 +47,17 @@ public class EndangeredAnimal extends Animal {
     }
   }
 
-  public static List<EndangeredAnimal> all() {
+  // @Override
+  public static List<EndangeredAnimal> allEndangered() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT * FROM animals;";
+      String sql = "SELECT * FROM animals WHERE type='endangered';";
       return con.createQuery(sql)
         .executeAndFetch(EndangeredAnimal.class);
     }
   }
 
-  public static EndangeredAnimal find(int id) {
+  // @Override
+  public static EndangeredAnimal findEndangered(int id) {
     try(Connection con = DB.sql2o.open()) {
       String sql = "SELECT * FROM animals WHERE id=:id;";
       EndangeredAnimal endangeredanimal = con.createQuery(sql)
@@ -87,9 +87,10 @@ public class EndangeredAnimal extends Animal {
     }
   }
 
+  @Override
   public List<Sighting> getSightings() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT * FROM sightings WHERE animal_id=:id;";
+      String sql = "SELECT * FROM sightings WHERE animal_id=:id AND type='endangered';";
         List<Sighting> sightings = con.createQuery(sql)
           .addParameter("id", id)
           .executeAndFetch(Sighting.class);
