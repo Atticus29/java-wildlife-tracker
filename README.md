@@ -11,6 +11,7 @@ The Forest Service is considering a proposal from a timber company to clearcut a
 To create the necessary databases, launch postgres, then psql, and run the following commands:
 
 * `\c mf`
+<!-- * `\c YOUR_DEFAULT_HERE` -->
 * `DROP DATABASE wildlife_tracker;`
 * `DROP DATABASE wildlife_tracker_test;`
 

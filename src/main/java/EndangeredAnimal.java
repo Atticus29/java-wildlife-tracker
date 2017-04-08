@@ -9,8 +9,16 @@ public class EndangeredAnimal extends Animal implements DatabaseManagement{
 
   public EndangeredAnimal(String name, String health, String age) {
     super(name);
-    this.health = health;
-    this.age = age;
+    if(health.equals("") || health == null){
+      throw new UnsupportedOperationException("Health is empty!");
+    }else{
+      this.health = health;
+    }
+    if(age == null){
+      throw new UnsupportedOperationException("age is empty!");
+    }else{
+      this.age = age;
+    }
     this.endangered = true;
     this.type = "endangered";
   }

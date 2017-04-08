@@ -22,6 +22,9 @@ public class AnimalTest {
     assertEquals(true, testAnimal instanceof Animal);
   }
 
+  // @Test
+  // public void animal_instantiationWith
+
   @Test
   public void animal_instantiatesWithTypeNotEndangered_true(){
     assertEquals("not endangered", testAnimal.getType());

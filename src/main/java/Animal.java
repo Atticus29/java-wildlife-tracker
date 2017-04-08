@@ -8,9 +8,12 @@ public class Animal {
   public String type;
 
   public Animal(String name) {
-    this.name = name;
+    if(name.equals("") || name == null){
+      throw new UnsupportedOperationException("Name is empty!");
+    }else{
+      this.name = name;
+    }
     this.type = "not endangered";
-    // this.id = id;
   }
 
   public String getName() {

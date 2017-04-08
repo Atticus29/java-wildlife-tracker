@@ -65,14 +65,26 @@ public class App {
         String name = request.queryParams("name");
         String health = request.queryParams("health");
         String age = request.queryParams("age");
-        EndangeredAnimal endangeredAnimal = new EndangeredAnimal(name, health, age);
-        endangeredAnimal.save();
+        try{
+          EndangeredAnimal endangeredAnimal = new EndangeredAnimal(name, health, age);
+          endangeredAnimal.save();
+        } catch(RuntimeException e){
+          System.out.println(e.getClass().getName());
+          response.redirect("/error");
+            return null;
+        }
         model.put("animals", Animal.allAnimal());
         model.put("endangeredAnimals", EndangeredAnimal.allEndangered());
       } else {
         String name = request.queryParams("name");
-        Animal animal = new Animal(name);
-        animal.save();
+        try{
+          Animal animal = new Animal(name);
+          animal.save();
+        } catch(RuntimeException e){
+          System.out.println(e.getClass().getName());
+          response.redirect("/error");
+            return null;
+        }
         model.put("animals", Animal.allAnimal());
         model.put("endangeredAnimals", EndangeredAnimal.allEndangered());
       }
@@ -101,5 +113,17 @@ public class App {
       model.put("template", "templates/error.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
+
+    get("/endangered_animal/:id/remove/:sightingID", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      int sightingID = Integer.parseInt(request.params(":sightingID"));
+      Sighting sighting = Sighting.find(sightingID);
+      sighting.delete();
+      EndangeredAnimal endangeredAnimal = EndangeredAnimal.findEndangered(Integer.parseInt(request.params("id")));
+      model.put("endangeredAnimal", endangeredAnimal);
+      model.put("template", "templates/endangered_animal.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
   }
 }

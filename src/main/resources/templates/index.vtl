@@ -1,8 +1,10 @@
 <h1>Report a Wildlife Sighting</h1>
+<hr>
 
 <h3><a href="/animal/new">Add Animal to System</a></h3>
 <hr>
 
+#if($animals.size() > 0)
 <h3> Report Non-Endangered Animal Sighting </h3>
 <form action="/sighting" method="post">
   #if($animals.size() >= 0)
@@ -20,8 +22,9 @@
     <button type="submit">Submit Report</button>
   #end
 </form>
-
 <hr>
+#end
+
 
 #if($endangeredAnimals.size() > 0)
   <h3> Report Endangered Animal Sighting </h3>
@@ -39,32 +42,63 @@
       <input type="text" name="rangerName">
       <button type="submit">Submit Report</button>
   </form>
+  <hr>
 #end
 
 
 <h3>Endangered Animal Sightings</h3>
-
 #if ($endangeredAnimals.size() == 0)
-  <a href="/animal/new">Add Animal to Database to Report a Sighting</a>
+  <a href="/animal/new">Add Endangered Animal to Database to Report a Sighting</a>
 #else
+<table>
+  <tr>
+    <th>Animal</th>
+    <th>Number of Reported Sightings</th>
+    <th>Edit Animal Details</th>
+    <th>Remove</th>
+  </tr>
   #foreach ($endangeredAnimal in $endangeredAnimals)
-    <a href="/endangered_animal/$endangeredAnimal.getId()" class="thumbnail">
-      <h4>$endangeredAnimal.getName()</h4>
-      <h4>$endangeredAnimal.getSightings().size() Reported Sighting(s)</h4>
-      <p>Click for details</p>
-    </a>
+    <tr>
+      <td>
+        <a href="/endangered_animal/$endangeredAnimal.getId()" class="thumbnail">$endangeredAnimal.getName()</a>
+      </td>
+      <td>$endangeredAnimal.getSightings().size()</td>
+      <td>
+          <a href="/endangered_animal/$endangeredAnimal.getId()/remove">Edit</a>
+      </td>
+      <td>
+        <a href="/endangered_animal/$endangeredAnimal.getId()/remove">Remove</a>
+      </td>
+    </tr>
   #end
+</table>
 #end
+<hr>
 
 <h3>All Animals & Sightings</h3>
 #if ($animals.size() == 0)
   <a href="/animal/new">Add Animal to Database to Report a Sighting</a>
 #else
+<table>
+  <tr>
+    <th>Animal</th>
+    <th>Number of Reported Sightings</th>
+    <th>Edit Animal Details</th>
+    <th>Remove</th>
+  </tr>
   #foreach ($animal in $animals)
-    <a href="/animal/$animal.getId()" class="thumbnail">
-      <h4>$animal.getName()</h4>
-      <h4>$animal.getSightings().size() Reported Sighting(s)</h4>
-      <p>Click for details</p>
-    </a>
+    <tr>
+      <td>
+        <a href="/animal/$animal.getId()" class="thumbnail">$animal.getName()</a>
+      </td>
+      <td>$animal.getSightings().size()</td>
+      <td>
+          <a href="/animal/$animal.getId()/remove">Edit</a>
+      </td>
+      <td>
+        <a href="/animal/$animal.getId()/remove">Remove</a>
+      </td>
+    </tr>
   #end
+</table>
 #end
