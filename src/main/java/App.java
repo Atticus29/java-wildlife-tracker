@@ -53,7 +53,7 @@ public class App {
       } catch(RuntimeException e){
         System.out.println(e.getClass().getName());
         response.redirect("/error");
-          return null;
+        return null;
       }
       model.put("animals", Animal.allAnimal());
       String animal = Animal.findAnimal(animalIdSelected).getName();
@@ -77,32 +77,58 @@ public class App {
         String name = request.queryParams("name");
         String health = request.queryParams("health");
         String age = request.queryParams("age");
+        String shouldUpdate;
         try{
-          EndangeredAnimal endangeredAnimal = new EndangeredAnimal(name, health, age);
-          endangeredAnimal.save();
-        } catch(RuntimeException e){
-          System.out.println(e.getClass().getName());
-          response.redirect("/error");
-          return null;
+          shouldUpdate = request.queryParams("update");
+        }catch(RuntimeException e){
+          shouldUpdate = "false";
+        }
+        if(shouldUpdate.equals("true")){
+          int endangeredAnimalId = Integer.parseInt(request.queryParams("endangeredAnimalId"));
+          EndangeredAnimal endangeredAnimal = EndangeredAnimal.findEndangered(endangeredAnimalId);
+          endangeredAnimal.updateName(name);
+          endangeredAnimal.updateHealth(health);
+          endangeredAnimal.updateAge(age);
+        }else{
+          try{
+            EndangeredAnimal endangeredAnimal = new EndangeredAnimal(name, health, age);
+            endangeredAnimal.save();
+          } catch(RuntimeException e){
+            System.out.println(e.getClass().getName());
+            response.redirect("/error");
+            return null;
+          }
         }
         model.put("animals", Animal.allAnimal());
         model.put("endangeredAnimals", EndangeredAnimal.allEndangered());
       } else {
+        String shouldUpdate;
         String name = request.queryParams("name");
         try{
-          Animal animal = new Animal(name);
-          animal.save();
-        } catch(RuntimeException e){
-          System.out.println(e.getClass().getName());
-          response.redirect("/error");
+          shouldUpdate = request.queryParams("update");
+        }catch(RuntimeException e){
+          shouldUpdate = "false";
+        }
+        if(shouldUpdate.equals("true")){
+          int animalId = Integer.parseInt(request.queryParams("animalId"));
+          Animal animal = Animal.findAnimal(animalId);
+          animal.updateName(name);
+        } else{
+          try{
+            Animal animal = new Animal(name);
+            animal.save();
+          } catch(RuntimeException e){
+            System.out.println(e.getClass().getName());
+            response.redirect("/error");
             return null;
+          }
         }
         model.put("animals", Animal.allAnimal());
         model.put("endangeredAnimals", EndangeredAnimal.allEndangered());
       }
       response.redirect("/");
-        return null;
-      });
+      return null;
+    });
 
     get("/animal/:id", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
@@ -156,6 +182,24 @@ public class App {
       model.put("endangeredAnimals", EndangeredAnimal.allEndangered());
       model.put("sightings", Sighting.all());
       model.put("template", "templates/index.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/endangered_animal/:id/edit", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      EndangeredAnimal endangeredAnimal = EndangeredAnimal.findEndangered(Integer.parseInt(request.params("id")));
+      model.put("endangeredAnimal", endangeredAnimal);
+      model.put("endangeredStatus", true);
+      model.put("template", "templates/animal-form.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/animal/:id/edit", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      Animal animal = Animal.findAnimal(Integer.parseInt(request.params("id")));
+      model.put("animal", animal);
+      model.put("endangeredStatus", false);
+      model.put("template", "templates/animal-form.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 

@@ -5,8 +5,12 @@ body{
   background-size: cover;
 }
 .container{
+  margin-top: 2%;
   background-color: white;
-  opacity: 0.7;
+  opacity: 0.87;
+}
+#big-title{
+  text-align: center;
 }
 
 table {

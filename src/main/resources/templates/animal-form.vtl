@@ -1,10 +1,62 @@
 <h4><a href="/">Home</a></h4>
 
+
+#if ($endangeredAnimal)
+<form action="/animal/new" method="post">
+  <label>Animal Species</label>
+  <input type="text" name="name" value="$endangeredAnimal.getName()">
+  <label>Endangered?</label>
+  <input type="checkbox" name="endangered" checked>
+  <h3>Additional Info for Endangered Animals:</h3>
+  <label>Health</label>
+  <select name="health" value="$endangeredAnimal.getHealth()">
+    <option>Ill</option>
+    <option>Okay</option>
+    <option>Healthy</option>
+  </select>
+  <label>Age</label>
+  <select name="age" value="$endangeredAnimal.getAge()">
+    <option>Newborn</option>
+    <option>Young</option>
+    <option>Adult</option>
+  </select>
+  <input type="hidden" name="update" value="true">
+  <input type="hidden" name="endangeredAnimalId" value="$endangeredAnimal.getId()">
+  <button type="submit" class="btn btn-success">Update Endangered Animal</button>
+</form>
+#end
+
+#if($animal)
+<form action="/animal/new" method="post">
+  <label>Animal Species</label>
+  <input type="text" name="name" value="$animal.getName()">
+  <label>Endangered?</label>
+  <input type="checkbox" name="endangered">
+  <h3>Additional Info for Endangered Animals:</h3>
+  <label>Health</label>
+  <select name="health">
+    <option>Ill</option>
+    <option>Okay</option>
+    <option>Healthy</option>
+  </select>
+  <label>Age</label>
+  <select name="age">
+    <option>Newborn</option>
+    <option>Young</option>
+    <option>Adult</option>
+  </select>
+  <input type="hidden" name="update" value="true">
+  <input type="hidden" name="animalId" value="$animal.getId()">
+  <button type="submit" class="btn btn-success">Update Animal</button>
+</form>
+#end
+
+#if (!$animal && !$endangeredAnimal)
 <h1>Add Animal to Database</h1>
 
 <form action="/animal/new" method="post">
   <label>Animal Species</label>
-  <input type="text" name="name">
+  <input type="text" name="name" required>
   <label>Endangered?</label>
   <input type="checkbox" name="endangered">
 
@@ -27,3 +79,4 @@
   <button type="submit" class="btn btn-success">Add Animal</button>
 
 </form>
+#end
