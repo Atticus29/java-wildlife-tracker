@@ -12,6 +12,7 @@
     <th>Reported By</th>
     <th>Location</th>
     <th>Animal's ID</th>
+    <th>Edit</th>
     <th>Remove</th>
   </tr>
   #foreach($sighting in $animal.getSightings())
@@ -20,7 +21,10 @@
     <td>$sighting.getRangerName()</td>
     <td>$sighting.getLocation()</td>
     <td>$sighting.getAnimalId()</td>
-    <td><a href="/animal/$sighting.getAnimalId()/remove/$sighting.getId()">Remove sighting</a></td>
+    <td><a href="/animal/$sighting.getAnimalId()/edit/$sighting.getId()">Edit sighting</a>
+    </td>
+    <td><a href="/animal/$sighting.getAnimalId()/remove/$sighting.getId()">Remove sighting</a>
+    </td>
   </tr>
   #end
 </table>

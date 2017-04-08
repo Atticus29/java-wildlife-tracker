@@ -25,9 +25,15 @@ public class App {
       String rangerName = request.queryParams("rangerName");
       int animalIdSelected = Integer.parseInt(request.queryParams("endangeredAnimalSelected"));
       String latLong = request.queryParams("latLong");
-      Sighting sighting = new Sighting(animalIdSelected, latLong, rangerName);
-      sighting.save();
-      model.put("sighting", sighting);
+      try{
+        Sighting sighting = new Sighting(animalIdSelected, latLong, rangerName);
+        sighting.save();
+        model.put("sighting", sighting);
+      } catch(RuntimeException e){
+        System.out.println(e.getClass().getName());
+        response.redirect("/error");
+        return null;
+      }
       model.put("animals", EndangeredAnimal.allEndangered());
       String animal = EndangeredAnimal.findEndangered(animalIdSelected).getName();
       model.put("animal", animal);
@@ -40,9 +46,15 @@ public class App {
       String rangerName = request.queryParams("rangerName");
       int animalIdSelected = Integer.parseInt(request.queryParams("animalSelected"));
       String latLong = request.queryParams("latLong");
-      Sighting sighting = new Sighting(animalIdSelected, latLong, rangerName);
-      sighting.save();
-      model.put("sighting", sighting);
+      try{
+        Sighting sighting = new Sighting(animalIdSelected, latLong, rangerName);
+        sighting.save();
+        model.put("sighting", sighting);
+      } catch(RuntimeException e){
+        System.out.println(e.getClass().getName());
+        response.redirect("/error");
+          return null;
+      }
       model.put("animals", Animal.allAnimal());
       String animal = Animal.findAnimal(animalIdSelected).getName();
       model.put("animal", animal);
@@ -71,7 +83,7 @@ public class App {
         } catch(RuntimeException e){
           System.out.println(e.getClass().getName());
           response.redirect("/error");
-            return null;
+          return null;
         }
         model.put("animals", Animal.allAnimal());
         model.put("endangeredAnimals", EndangeredAnimal.allEndangered());
@@ -122,6 +134,39 @@ public class App {
       EndangeredAnimal endangeredAnimal = EndangeredAnimal.findEndangered(Integer.parseInt(request.params("id")));
       model.put("endangeredAnimal", endangeredAnimal);
       model.put("template", "templates/endangered_animal.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/animal/:id/remove/:sightingID", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      int sightingID = Integer.parseInt(request.params(":sightingID"));
+      Sighting sighting = Sighting.find(sightingID);
+      sighting.delete();
+      Animal animal = Animal.findAnimal(Integer.parseInt(request.params("id")));
+      model.put("animal", animal);
+      model.put("template", "templates/animal.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/endangered_animal/:id/remove", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      EndangeredAnimal endangeredAnimal = EndangeredAnimal.findEndangered(Integer.parseInt(request.params("id")));
+      endangeredAnimal.delete();
+      model.put("animals", Animal.allAnimal());
+      model.put("endangeredAnimals", EndangeredAnimal.allEndangered());
+      model.put("sightings", Sighting.all());
+      model.put("template", "templates/index.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/animal/:id/remove", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      Animal animal = Animal.findAnimal(Integer.parseInt(request.params("id")));
+      animal.delete();
+      model.put("animals", Animal.allAnimal());
+      model.put("endangeredAnimals", EndangeredAnimal.allEndangered());
+      model.put("sightings", Sighting.all());
+      model.put("template", "templates/index.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 

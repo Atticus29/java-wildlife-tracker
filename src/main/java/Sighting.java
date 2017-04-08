@@ -14,8 +14,16 @@ public class Sighting implements DatabaseManagement{
 
   public Sighting(int animal_id, String location, String ranger_name) {
     this.animal_id = animal_id;
-    this.location = location;
-    this.ranger_name = ranger_name;
+    if(location.equals("") || location == null){
+      throw new UnsupportedOperationException("location is empty!");
+    }else{
+      this.location = location;
+    }
+    if(ranger_name.equals("") || ranger_name == null){
+      throw new UnsupportedOperationException("ranger_name is empty!");
+    }else{
+      this.ranger_name = ranger_name;
+    }
     this.id = id;
   }
 

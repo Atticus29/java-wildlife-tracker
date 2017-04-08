@@ -1,7 +1,7 @@
 <h1>Report a Wildlife Sighting</h1>
 <hr>
 
-<h3><a href="/animal/new">Add Animal to System</a></h3>
+<h3><a href="/animal/new">Add A New Animal to the System</a></h3>
 <hr>
 
 #if($animals.size() > 0)
@@ -19,7 +19,7 @@
     <input type="text" name="latLong">
     <label>Your Name</label>
     <input type="text" name="rangerName">
-    <button type="submit">Submit Report</button>
+    <button type="submit" class="btn btn-success">Submit Report</button>
   #end
 </form>
 <hr>
@@ -35,12 +35,11 @@
           <option value="$endangered_animal.getId()">$endangered_animal.getName()</option>
         #end
       </select>
-
       <label>Location</label>
       <input type="text" name="latLong">
       <label>Your Name</label>
       <input type="text" name="rangerName">
-      <button type="submit">Submit Report</button>
+      <button type="submit" class="btn btn-success">Submit Report</button>
   </form>
   <hr>
 #end
@@ -60,7 +59,7 @@
   #foreach ($endangeredAnimal in $endangeredAnimals)
     <tr>
       <td>
-        <a href="/endangered_animal/$endangeredAnimal.getId()" class="thumbnail">$endangeredAnimal.getName()</a>
+        <a href="/endangered_animal/$endangeredAnimal.getId()" >$endangeredAnimal.getName()</a>
       </td>
       <td>$endangeredAnimal.getSightings().size()</td>
       <td>
@@ -89,7 +88,7 @@
   #foreach ($animal in $animals)
     <tr>
       <td>
-        <a href="/animal/$animal.getId()" class="thumbnail">$animal.getName()</a>
+        <a href="/animal/$animal.getId()" >$animal.getName()</a>
       </td>
       <td>$animal.getSightings().size()</td>
       <td>
