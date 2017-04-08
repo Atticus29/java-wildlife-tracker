@@ -25,8 +25,9 @@ public class App {
       String rangerName = request.queryParams("rangerName");
       int animalIdSelected = Integer.parseInt(request.queryParams("endangeredAnimalSelected"));
       String latLong = request.queryParams("latLong");
+      int rangerBadge = Integer.parseInt(request.queryParams("badge-num"));
       try{
-        Sighting sighting = new Sighting(animalIdSelected, latLong, rangerName);
+        Sighting sighting = new Sighting(animalIdSelected, latLong, rangerName, rangerBadge);
         sighting.save();
         model.put("sighting", sighting);
       } catch(RuntimeException e){
@@ -46,8 +47,9 @@ public class App {
       String rangerName = request.queryParams("rangerName");
       int animalIdSelected = Integer.parseInt(request.queryParams("animalSelected"));
       String latLong = request.queryParams("latLong");
+      int rangerBadge = Integer.parseInt(request.queryParams("badge-num"));
       try{
-        Sighting sighting = new Sighting(animalIdSelected, latLong, rangerName);
+        Sighting sighting = new Sighting(animalIdSelected, latLong, rangerName, rangerBadge);
         sighting.save();
         model.put("sighting", sighting);
       } catch(RuntimeException e){
@@ -139,22 +141,6 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    // get("/animal/:id", (request, response) -> {
-    //   Map<String, Object> model = new HashMap<String, Object>();
-    //   Animal animal = Animal.findAnimal(Integer.parseInt(request.params("id")));
-    //   model.put("animal", animal);
-    //   model.put("template", "templates/animal.vtl");
-    //   return new ModelAndView(model, layout);
-    // }, new VelocityTemplateEngine());
-
-    // get("/endangered_animal/:id", (request, response) -> {
-    //   Map<String, Object> model = new HashMap<String, Object>();
-      // EndangeredAnimal endangeredAnimal = EndangeredAnimal.findEndangered(Integer.parseInt(request.params("id")));
-      // model.put("endangeredAnimal", endangeredAnimal);
-      // model.put("template", "templates/endangered_animal.vtl");
-    //   return new ModelAndView(model, layout);
-    // }, new VelocityTemplateEngine());
-
     get("/error", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
       model.put("template", "templates/error.vtl");
@@ -219,6 +205,34 @@ public class App {
       model.put("animals", Animal.allAnimal());
       model.put("endangeredAnimals", EndangeredAnimal.allEndangered());
       model.put("sightings", Sighting.all());
+      model.put("template", "templates/index.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/:animalType/:id/edit/:sightingId", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      String animalType = request.params(":animaltype");
+      model.put("animalType", animalType);
+      boolean editStatus = true;
+      model.put("editStatus", editStatus);
+      int sightingID = Integer.parseInt(request.params(":sightingId"));
+      Sighting currentSighting = Sighting.find(sightingID);
+      model.put("sighting", currentSighting);
+      model.put("animals", Animal.allAnimal());
+      model.put("endangeredAnimals", EndangeredAnimal.allEndangered());
+      model.put("sightings", Sighting.all());
+      model.put("template", "templates/index.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/sighting/update", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      int sightingID = Integer.parseInt(request.queryParams("sighting-id-from-form"));
+      Sighting currentSighting = Sighting.find(sightingID);
+      String newLocation = request.queryParams("latLong");
+      String newRangerName = request.queryParams("rangerName");
+      int newBadgeNumber = Integer.parseInt(request.queryParams("badge-num"));
+      currentSighting.update(newLocation, newRangerName, newBadgeNumber);
       model.put("template", "templates/index.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());

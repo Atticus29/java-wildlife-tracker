@@ -4,10 +4,28 @@
 <h3><a href="/animal/new">Add A New Animal to the System</a></h3>
 <hr>
 
+#if($editStatus)
+  #set($buttonMessage = "Update Report")
+  #set($locationVal = $sighting.getLocation())
+  #set($rangerNameVal = $sighting.getRangerName())
+  #set($submitDestination = "/sighting/update")
+  #set($sightingId = $sighting.getId())
+
+#else
+  #set($buttonMessage = "Submit Report")
+  #set($locationVal = "")
+  #set($rangerNameVal = "")
+  #set($sightingId = "")
+  #if($animalType == "animal")
+    #set($submitDestination = "/sighting")
+  #else
+    #set($submitDestination = "/endangered_sighting")
+  #end
+#end
+
 #if($animals.size() > 0)
 <h3> Report Non-Endangered Animal Sighting </h3>
-<form action="/sighting" method="post">
-  #if($animals.size() >= 0)
+<form action="$submitDestination" method="post">
     <label>Select Animal</label>
     <select name="animalSelected">
       #foreach($animal in $animals)
@@ -16,11 +34,13 @@
     </select>
 
     <label>Location</label>
-    <input type="text" name="latLong">
-    <label>Your Name</label>
-    <input type="text" name="rangerName">
-    <button type="submit" class="btn btn-success">Submit Report</button>
-  #end
+    <input type="text" name="latLong" value="$locationVal">
+    <label>Ranger Name</label>
+    <input type="text" name="rangerName" value="$rangerNameVal">
+    <label for="badge-num">Badge Number</label>
+    <input type="number" name="badge-num" value="" required>
+    <input type="hidden" name="sighting-id-from-form" value="$sightingId">
+    <button type="submit" class="btn btn-success">$buttonMessage</button>
 </form>
 <hr>
 #end
@@ -56,7 +76,7 @@
 
 #if($endangeredAnimals.size() > 0)
   <h3> Report Endangered Animal Sighting </h3>
-  <form action="/endangered_sighting" method="post">
+  <form action="$submitDestination" method="post">
       <label>Select Endangered Animal</label>
       <select name="endangeredAnimalSelected">
         #foreach($endangered_animal in $endangeredAnimals)
@@ -64,12 +84,13 @@
         #end
       </select>
       <label>Location</label>
-      <input type="text" name="latLong">
+      <input type="text" name="latLong" value="$locationVal">
       <label>Ranger Name</label>
-      <input type="text" name="rangerName">
+      <input type="text" name="rangerName" value="$rangerNameVal">
       <label for="badge-num">Badge Number</label>
       <input type="number" name="badge-num" value="" required>
-      <button type="submit" class="btn btn-success">Submit Report</button>
+      <input type="hidden" name="sighting-id-from-form" value="$sightingId">
+      <button type="submit" class="btn btn-success">$buttonMessage</button>
   </form>
   <hr>
 #end
