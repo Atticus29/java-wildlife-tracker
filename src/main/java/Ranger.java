@@ -20,18 +20,11 @@ public class Ranger implements DatabaseManagement {
     if(name.length() > MAX_NAME_LENGTH){
       throw new UnsupportedOperationException("Name is too long for the database.");
     } else{
-      // make it throw an error if someone already has that name
       this.name = name;
     }
-
-    // if(!(badgeNumber instanceof int)){
-    //   throw new UnsupportedOperationException ("Badge number is not a number");
-    // } else{
-      this.badge_number = badgeNumber;
-    // }
-
+    // make it throw an error if someone already has that badge number
+    this.badge_number = badgeNumber;
     String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-
     if(!Pattern.matches(emailPattern, email)){
       throw new UnsupportedOperationException ("Not a valid email address");
     } else{
@@ -138,6 +131,16 @@ public class Ranger implements DatabaseManagement {
           .throwOnMappingFailure(false)
           .executeAndFetch(Sighting.class);
       return sightings;
+    }
+  }
+
+  public static Ranger findByBadge(int badge){
+    String sqlQuery = "SELECT * FROM rangers WHERE badge_number=:badge_number;";
+    try(Connection con=DB.sql2o.open()){
+      Ranger result = con.createQuery(sqlQuery)
+        .addParameter("badge_number", badge)
+        .executeAndFetchFirst(Ranger.class);
+      return result;
     }
   }
 

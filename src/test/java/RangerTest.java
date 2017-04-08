@@ -31,11 +31,6 @@ public class RangerTest {
     Ranger longRanger = new Ranger("antidisestablishmentarianismusson", 321, "mark.aaron.fisher@gmail.com");
   }
 
-  // @Test (expected = UnsupportedOperationException.class)
-  // public void ranger_throwsExceptionIfBadgeNotANumber(){
-  //   Ranger longRanger = new Ranger("Bill", "321a", "mark.aaron.fisher@gmail.com");
-  // }
-
   @Test (expected = UnsupportedOperationException.class)
   public void ranger_throwsExceptionIfEmailNotValid(){
     Ranger longRanger = new Ranger("Bill", 321,  "@mark.aaron.fisher.gmail.com");
@@ -90,6 +85,18 @@ public class RangerTest {
   @Test
   public void findRanger_returnsNullWhenNoRangerFound_null() {
     assertTrue(Ranger.findRanger(999) == null);
+  }
+
+  @Test
+  public void findByBadge_returnsASingleRanger_true(){
+    Ranger restoredRanger = Ranger.findByBadge(321);
+    assertEquals("Bill", restoredRanger.getName());
+  }
+
+  @Test
+  public void findByBadge_returnsNullWhenItDoesNotFindMatch_true(){
+    Ranger restoredRanger = Ranger.findByBadge(32);
+    assertEquals(null, restoredRanger);
   }
 
 
