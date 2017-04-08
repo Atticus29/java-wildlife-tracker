@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.sql.Timestamp;
 import java.util.Date;
 
-public class Sighting {
+public class Sighting implements DatabaseManagement{
   private int animal_id;
   private String location;
   private String ranger_name;
@@ -60,6 +60,7 @@ public class Sighting {
         .addParameter("animal_id", this.animal_id)
         .addParameter("location", this.location)
         .addParameter("ranger_name", this.ranger_name)
+        // .addParameter("ranger_id", )
         .throwOnMappingFailure(false)
         .executeUpdate()
         .getKey();
@@ -90,6 +91,15 @@ public class Sighting {
       return sighting;
     } catch (IndexOutOfBoundsException exception) {
       return null;
+    }
+  }
+
+  public void delete() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "DELETE FROM sightings WHERE id=:id;";
+      con.createQuery(sql)
+        .addParameter("id", this.id)
+        .executeUpdate();
     }
   }
 

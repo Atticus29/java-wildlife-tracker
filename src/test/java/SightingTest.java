@@ -72,4 +72,10 @@ public class SightingTest {
     assertEquals(rightNow.getDate(), testSighting.getTime_sighted().getDate());
   }
 
+  @Test
+  public void delete_deletesSightingFromDatabase_0() {
+    testSighting.delete();
+    assertEquals(0, Sighting.all().size());
+  }
+
 }
