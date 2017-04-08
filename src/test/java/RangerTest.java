@@ -99,5 +99,8 @@ public class RangerTest {
     assertEquals(null, restoredRanger);
   }
 
-
+  @Test (expected = UnsupportedOperationException.class)
+  public void ranger_throwsExceptionIfBadgeAlreadyExists_true(){
+    Ranger testRangerBadge = new Ranger("Perry", 321, "mark.fisher3@pcc.edu");
+  }
 }

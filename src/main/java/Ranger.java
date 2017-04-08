@@ -23,7 +23,11 @@ public class Ranger implements DatabaseManagement {
       this.name = name;
     }
     // make it throw an error if someone already has that badge number
-    this.badge_number = badgeNumber;
+    if(null == Ranger.findByBadge(badgeNumber)){
+      this.badge_number = badgeNumber;
+    } else{
+      throw new UnsupportedOperationException("Badge number already assigned!");
+    }
     String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     if(!Pattern.matches(emailPattern, email)){
       throw new UnsupportedOperationException ("Not a valid email address");
