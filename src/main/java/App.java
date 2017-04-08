@@ -73,17 +73,12 @@ public class App {
     post("/animal/new", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
       boolean endangered = request.queryParamsValues("endangered")!=null;
+      boolean shouldUpdate= request.queryParams("update")!=null;
       if (endangered) {
         String name = request.queryParams("name");
         String health = request.queryParams("health");
         String age = request.queryParams("age");
-        String shouldUpdate;
-        try{
-          shouldUpdate = request.queryParams("update");
-        }catch(RuntimeException e){
-          shouldUpdate = "false";
-        }
-        if(shouldUpdate.equals("true")){
+        if(shouldUpdate){
           int endangeredAnimalId = Integer.parseInt(request.queryParams("endangeredAnimalId"));
           EndangeredAnimal endangeredAnimal = EndangeredAnimal.findEndangered(endangeredAnimalId);
           endangeredAnimal.updateName(name);
@@ -102,14 +97,8 @@ public class App {
         model.put("animals", Animal.allAnimal());
         model.put("endangeredAnimals", EndangeredAnimal.allEndangered());
       } else {
-        String shouldUpdate;
         String name = request.queryParams("name");
-        try{
-          shouldUpdate = request.queryParams("update");
-        }catch(RuntimeException e){
-          shouldUpdate = "false";
-        }
-        if(shouldUpdate.equals("true")){
+        if(shouldUpdate){
           int animalId = Integer.parseInt(request.queryParams("animalId"));
           Animal animal = Animal.findAnimal(animalId);
           animal.updateName(name);
