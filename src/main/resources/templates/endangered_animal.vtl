@@ -1,9 +1,15 @@
 <h4><a href="/">Home</a></h4>
 
-<h1 class="Animal Heading">$endangeredAnimal.getName().toUpperCase()</h1>
-<!-- <h3>ID: $endangeredAnimal.getId()</h3> -->
+#if($type == "animal")
+  #set ($beast = $animal)
+#else
+  #set ($beast = $endangeredAnimal)
+#end
 
-#if($endangeredAnimal.getSightings().size() == 0)
+<h1 class="Animal Heading">$beast.getName().toUpperCase()</h1>
+<!-- <h3>ID: $$beast.getId()</h3> -->
+
+#if($beast.getSightings().size() == 0)
 <p>To report a sighting, please visit the <a href="/">home page</a>.</p>
 #else
 <table>
@@ -12,20 +18,24 @@
     <th>Reported By</th>
     <th>Location</th>
     <th>Animal's ID</th>
-    <th>Animal's Health</th>
-    <th>Animal's Age</th>
+    #if($type == "endangeredAnimal")
+      <th>Animal's Health</th>
+      <th>Animal's Age</th>
+    #end
     <th>Edit</th>
     <th>Remove</th>
   </tr>
 
-  #foreach($sighting in $endangeredAnimal.getSightings())
+  #foreach($sighting in $$beast.getSightings())
   <tr>
     <td>$sighting.getTime_sightedAsString()</td>
     <td>$sighting.getRangerName()</td>
     <td>$sighting.getLocation()</td>
     <td>$sighting.getAnimalId()</td>
-    <td>$endangeredAnimal.getHealth()</td>
-    <td>$endangeredAnimal.getAge()</td>
+    #if($type == "endangeredAnimal")
+      <td>$beast.getHealth()</td>
+      <td>$beast.getAge()</td>
+    #end
     <td>
       <a href="/endangered_animal/$sighting.getAnimalId()/edit/$sighting.getId()">Edit</a>
     </td>

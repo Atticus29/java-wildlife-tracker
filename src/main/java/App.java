@@ -119,21 +119,41 @@ public class App {
       return null;
     });
 
-    get("/animal/:id", (request, response) -> {
+    get("/:animaltype/:id", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
-      Animal animal = Animal.findAnimal(Integer.parseInt(request.params("id")));
-      model.put("animal", animal);
-      model.put("template", "templates/animal.vtl");
-      return new ModelAndView(model, layout);
-    }, new VelocityTemplateEngine());
-
-    get("/endangered_animal/:id", (request, response) -> {
-      Map<String, Object> model = new HashMap<String, Object>();
-      EndangeredAnimal endangeredAnimal = EndangeredAnimal.findEndangered(Integer.parseInt(request.params("id")));
-      model.put("endangeredAnimal", endangeredAnimal);
+      String animalType = request.params(":animaltype");
+      if (animalType.equals("animal")){
+        Animal animal = Animal.findAnimal(Integer.parseInt(request.params("id")));
+        model.put("animal", animal);
+        model.put("type", "animal");
+        // model.put("template", "templates/animal.vtl");
+      } else if (animalType.equals("endangered_animal")){
+        EndangeredAnimal endangeredAnimal = EndangeredAnimal.findEndangered(Integer.parseInt(request.params("id")));
+        model.put("endangeredAnimal", endangeredAnimal);
+        model.put("type", "endangeredAnimal");
+      } else{
+        response.redirect("/error");
+        return null;
+      }
       model.put("template", "templates/endangered_animal.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
+
+    // get("/animal/:id", (request, response) -> {
+    //   Map<String, Object> model = new HashMap<String, Object>();
+    //   Animal animal = Animal.findAnimal(Integer.parseInt(request.params("id")));
+    //   model.put("animal", animal);
+    //   model.put("template", "templates/animal.vtl");
+    //   return new ModelAndView(model, layout);
+    // }, new VelocityTemplateEngine());
+
+    // get("/endangered_animal/:id", (request, response) -> {
+    //   Map<String, Object> model = new HashMap<String, Object>();
+      // EndangeredAnimal endangeredAnimal = EndangeredAnimal.findEndangered(Integer.parseInt(request.params("id")));
+      // model.put("endangeredAnimal", endangeredAnimal);
+      // model.put("template", "templates/endangered_animal.vtl");
+    //   return new ModelAndView(model, layout);
+    // }, new VelocityTemplateEngine());
 
     get("/error", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();

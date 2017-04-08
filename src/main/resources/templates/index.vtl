@@ -25,6 +25,34 @@
 <hr>
 #end
 
+<h3>Non-Endangered Animal Sightings</h3>
+#if ($animals.size() == 0)
+  <a href="/animal/new">Add Animal to Database to Report a Sighting</a>
+#else
+<table>
+  <tr>
+    <th>Animal</th>
+    <th>Number of Reported Sightings</th>
+    <th>Edit Animal Details</th>
+    <th>Remove</th>
+  </tr>
+  #foreach ($animal in $animals)
+    <tr>
+      <td>
+        <a href="/animal/$animal.getId()" >$animal.getName()</a>
+      </td>
+      <td>$animal.getSightings().size()</td>
+      <td>
+          <a href="/animal/$animal.getId()/edit">Edit</a>
+      </td>
+      <td>
+        <a href="/animal/$animal.getId()/remove">Remove</a>
+      </td>
+    </tr>
+  #end
+</table>
+#end
+
 
 #if($endangeredAnimals.size() > 0)
   <h3> Report Endangered Animal Sighting </h3>
@@ -37,13 +65,14 @@
       </select>
       <label>Location</label>
       <input type="text" name="latLong">
-      <label>Your Name</label>
+      <label>Ranger Name</label>
       <input type="text" name="rangerName">
+      <label for="badge-num">Badge Number</label>
+      <input type="number" name="badge-num" value="" required>
       <button type="submit" class="btn btn-success">Submit Report</button>
   </form>
   <hr>
 #end
-
 
 <h3>Endangered Animal Sightings</h3>
 #if ($endangeredAnimals.size() == 0)
@@ -73,31 +102,3 @@
 </table>
 #end
 <hr>
-
-<h3>Non-Endangered Animal Sightings</h3>
-#if ($animals.size() == 0)
-  <a href="/animal/new">Add Animal to Database to Report a Sighting</a>
-#else
-<table>
-  <tr>
-    <th>Animal</th>
-    <th>Number of Reported Sightings</th>
-    <th>Edit Animal Details</th>
-    <th>Remove</th>
-  </tr>
-  #foreach ($animal in $animals)
-    <tr>
-      <td>
-        <a href="/animal/$animal.getId()" >$animal.getName()</a>
-      </td>
-      <td>$animal.getSightings().size()</td>
-      <td>
-          <a href="/animal/$animal.getId()/edit">Edit</a>
-      </td>
-      <td>
-        <a href="/animal/$animal.getId()/remove">Remove</a>
-      </td>
-    </tr>
-  #end
-</table>
-#end
