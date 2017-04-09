@@ -11,9 +11,21 @@ public class App {
     staticFileLocation("/public");
     String layout = "templates/layout.vtl";
 
+    post("/", (request, response) ->{
+      Map<String, Object> model = new HashMap<String, Object>();
+      String newRangerName = request.queryParams("ranger-name");
+      int newRangerBadge = Integer.parseInt(request.queryParams("ranger-badge"));
+      String newRangerEmail = request.queryParams("ranger-email");
+      Ranger newRanger = new Ranger(newRangerName, newRangerBadge, newRangerEmail);
+      newRanger.save();
+      response.redirect("/");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
     get("/", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
       model.put("animals", Animal.allAnimal());
+      model.put("rangers", Ranger.allRangers());
       model.put("endangeredAnimals", EndangeredAnimal.allEndangered());
       model.put("sightings", Sighting.all());
       model.put("template", "templates/index.vtl");
@@ -234,6 +246,26 @@ public class App {
       int newBadgeNumber = Integer.parseInt(request.queryParams("badge-num"));
       currentSighting.update(newLocation, newRangerName, newBadgeNumber);
       model.put("template", "templates/index.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/ranger/new", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      System.out.println("this happened!");
+      model.put("template", "templates/ranger-form.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/ranger/:rangerId", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      int rangerId = Integer.parseInt(request.params(":rangerId"));
+      Ranger currentRanger = Ranger.findRanger(rangerId);
+      List<Sighting> currentRangerSightings = currentRanger.getSightings();
+      model.put("sightings", currentRangerSightings);
+      model.put("ranger", currentRanger);
+      model.put("animals", Animal.allAnimal());
+      model.put("endangeredAnimals", EndangeredAnimal.allEndangered());
+      model.put("template", "templates/ranger.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 

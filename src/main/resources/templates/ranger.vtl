@@ -1,0 +1,47 @@
+<!-- ranger.vtl -->
+
+#if($ranger)
+<h4>
+  <a href="/">Go Back to Home</a>
+</h4>
+<h3>$ranger.getName()</h3>
+#if($sightings.size()>0)
+<table>
+  <tr>
+    <th>Time of Sighting</th>
+    <th>Reported By</th>
+    <th>Location</th>
+    <th>Animal's ID</th>
+    <th>Remove</th>
+  </tr>
+
+  #foreach($sighting in $sightings)
+  <tr>
+    <td>$sighting.getTime_sightedAsString()</td>
+    <td>$sighting.getRangerName()</td>
+    <td>$sighting.getLocation()</td>
+    <td>$sighting.getAnimalId()</td>
+    #set ($currentAnimal = Animal.findAnimal($sighting.getAnimalId()))
+    #set ($currentEndangeredAnimal = EndangeredAnimal.findEndangeredAnimal($sighting.getAnimalId()))
+    #if($currentAnimal != null)
+    <td><a href="/animal/$sighting.getAnimalId()/remove/$sighting.getId()">Remove sighting</a>
+    </td>
+    #else
+    <td><a href="/endangered_animal/$sighting.getAnimalId()/remove/$sighting.getId()">Remove sighting</a>
+    </td>
+    #end
+  </tr>
+</tr>
+#end
+</table>
+#else
+<h4>No sightings recorded yet for this ranger</h4>
+#end
+#else
+<h3>No Ranger Goes By this ID yet</h3>
+<h4>
+  <a href="/">Go Back to Home</a>
+</h4>
+#end
+
+<!-- ranger.vtl -->
