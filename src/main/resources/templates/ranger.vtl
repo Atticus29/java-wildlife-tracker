@@ -21,13 +21,8 @@
     <td>$sighting.getRangerName()</td>
     <td>$sighting.getLocation()</td>
     <td>$sighting.getAnimalId()</td>
-    #set ($currentAnimal = Animal.findAnimal($sighting.getAnimalId()))
-    #set ($currentEndangeredAnimal = EndangeredAnimal.findEndangeredAnimal($sighting.getAnimalId()))
-    #if($currentAnimal != null)
-    <td><a href="/animal/$sighting.getAnimalId()/remove/$sighting.getId()">Remove sighting</a>
-    </td>
-    #else
-    <td><a href="/endangered_animal/$sighting.getAnimalId()/remove/$sighting.getId()">Remove sighting</a>
+    <td><a href="/animal/$sighting.getAnimalId()/remove/$sighting.getId()">Remove animal sighting</a>
+      <a href="/endangered_animal/$sighting.getAnimalId()/remove/$sighting.getId()">Remove endangered sighting</a>
     </td>
     #end
   </tr>

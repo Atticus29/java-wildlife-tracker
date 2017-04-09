@@ -1,13 +1,24 @@
 <!-- ranger-form.vtl -->
 
+#if($ranger)
+  #set($name = $ranger.getName())
+  #set($badge = $ranger.getBadge_number())
+  #set($email = $ranger.getEmail())
+  #set($buttonMessage = "Update Ranger")
+#else
+  #set($name = "")
+  #set($badge = "")
+  #set($email = "")
+  #set($buttonMessage = "Add Ranger")
+#end
 <form action="/" method="post">
   <label for="ranger-name">Ranger Name:</label>
-  <input type="text" name="ranger-name" required>
+  <input type="text" name="ranger-name" required value="$name">
   <label for="ranger-badge">Badge Number:</label>
-  <input type="number" name="ranger-badge" required>
+  <input type="number" name="ranger-badge" required value="$badge">
   <label for="ranger-email">Email Address:</label>
-  <input type="email" name="ranger-email" required>
-  <button type="submit" name="button" class="btn btn-success">Add Ranger</button>
+  <input type="email" name="ranger-email" required value="$email">
+  <button type="submit" name="button" class="btn btn-success">$buttonMessage</button>
 </form>
 
 <!-- ranger-form.vtl -->

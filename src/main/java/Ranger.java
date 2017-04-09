@@ -129,9 +129,9 @@ public class Ranger implements DatabaseManagement {
 
   public List<Sighting> getSightings() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT * FROM sightings WHERE Ranger_id=:id;";
+      String sql = "SELECT * FROM sightings WHERE ranger_badge=:ranger_badge;";
         List<Sighting> sightings = con.createQuery(sql)
-          .addParameter("id", this.id)
+          .addParameter("ranger_badge", this.badge_number)
           .throwOnMappingFailure(false)
           .executeAndFetch(Sighting.class);
       return sightings;

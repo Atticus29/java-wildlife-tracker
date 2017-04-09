@@ -10,7 +10,11 @@ body{
   opacity: 0.87;
   padding-bottom: 2%;
 }
-#big-title{
+/*#big-title{
+  text-align: center;
+}*/
+
+h1{
   text-align: center;
 }
 
