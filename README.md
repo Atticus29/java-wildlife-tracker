@@ -7,7 +7,14 @@ An app for the forest service to track animals for an environmental impact study
 The Forest Service is considering a proposal from a timber company to clearcut a nearby forest of Douglas Fir. Before this proposal may be approved, they must complete an environmental impact study. This application was developed to allow Rangers to track wildlife sightings in the area.
 
 ### Known Bugs
-Can’t update endangered animal to non-endangered or vice versa (have to just remove and create new one).
+
+If I had more time, here's what I would attack next:
+
+* Not pulling up ranger’s sightings in ranger page.
+
+* Add error handling if badge already exists. The throw has already been written, but the try catch has not.
+
+* Can’t update endangered animal to non-endangered or vice versa (have to just remove and create new one).
 
 ### Setup
 
