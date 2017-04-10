@@ -267,6 +267,8 @@ public class App {
       System.out.println("Ranger id is " + rangerId);
       Ranger currentRanger = Ranger.findRanger(rangerId);
       model.put ("ranger", currentRanger);
+      List<Sighting> sightings = currentRanger.getSightings();
+      model.put("sightings", sightings);
       model.put("template", "/templates/ranger.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());

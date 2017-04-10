@@ -10,9 +10,9 @@ The Forest Service is considering a proposal from a timber company to clearcut a
 
 If I had more time, here's what I would attack next:
 
-* Not pulling up ranger’s sightings in ranger page.
-
 * Can’t update endangered animal to non-endangered or vice versa (have to just remove and create new one).
+
+* Display animal's name in ranger page
 
 ### Setup
 
