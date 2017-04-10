@@ -98,25 +98,27 @@ public class Ranger implements DatabaseManagement {
     }
   }
 
-  public void updateName(String name) {
+  public void update(String name, int badge, String email) {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE Rangers SET name=:name WHERE id=:id;";
+      String sql = "UPDATE Rangers SET name=:name, badge_number=:badge_number, email=:email  WHERE id=:id;";
       con.createQuery(sql)
         .addParameter("id", this.id)
         .addParameter("name", name)
+        .addParameter("badge_number", badge)
+        .addParameter("email", email)
         .executeUpdate();
     }
   }
 
-  public void updateBadgeNumber(int badgeNum) {
-    try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE Rangers SET badge_number=:badge_number WHERE id=:id;";
-      con.createQuery(sql)
-        .addParameter("id", this.id)
-        .addParameter("badge_number", badgeNum)
-        .executeUpdate();
-    }
-  }
+  // public void updateBadgeNumber(int badgeNum) {
+  //   try(Connection con = DB.sql2o.open()) {
+  //     String sql = "UPDATE Rangers SET badge_number=:badge_number WHERE id=:id;";
+  //     con.createQuery(sql)
+  //       .addParameter("id", this.id)
+  //       .addParameter("badge_number", badgeNum)
+  //       .executeUpdate();
+  //   }
+  // }
 
   public void delete() {
     try(Connection con = DB.sql2o.open()) {

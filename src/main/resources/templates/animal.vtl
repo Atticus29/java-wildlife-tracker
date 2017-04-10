@@ -1,13 +1,14 @@
 <h4><a href="/">Home</a></h4>
 #if($animal)
-  <h1 class="Animal Heading">$animal.getName().toUpperCase()</h1>
+<h1 class="Animal Heading">$animal.getName().toUpperCase()</h1>
 #else
-  <h1 class="Animal Heading">$endangeredAnimal.getName().toUpperCase()</h1>
+<h1 class="Animal Heading">$endangeredAnimal.getName().toUpperCase()</h1>
 #end
 <!-- Animal -->
 #if($animal.getSightings().size() == 0)
-  <p>To report a sighting, please visit the <a href="/">home page</a>.</p>
-#else
+<p>To report a sighting, please visit the <a href="/">home page</a>.</p>
+#end
+#if($animal && $animal.getSightings().size() > 0)
 <table>
   <tr>
     <th>Time of Sighting</th>
@@ -36,8 +37,19 @@
 
 <!-- Endangered Animal -->
 #if($endangeredAnimal.getSightings().size() == 0)
-  <p>To report a sighting, please visit the <a href="/">home page</a>.</p>
-#else
+<p>To report a sighting, please visit the <a href="/">home page</a>.</p>
+#end
+#if($endangeredAnimal && $endangeredAnimal.getSightings().size() > 0)
+<table>
+  <tr>
+    <th>Time of Sighting</th>
+    <th>Reported By</th>
+    <th>Location</th>
+    <th>Animal's ID</th>
+    <th>Endangered Status</th>
+    <th>Edit</th>
+    <th>Remove</th>
+  </tr>
   #foreach($sighting in $endangeredAnimal.getSightings())
   <tr>
     <td>$sighting.getTime_sightedAsString()</td>

@@ -43,15 +43,11 @@ public class RangerTest {
   }
 
   @Test
-  public void updateBadgeNumber_changesBadgeNumber_true(){
-    testRanger.updateBadgeNumber(100);
+  public void update_changesNameBadgeNumberEmail_true(){
+    testRanger.update("Fran", 100, "mark.fisher3@pcc.edu");
+    assertEquals("Fran",Ranger.findRanger(testRanger.getId()).getName());
     assertEquals(100,Ranger.findRanger(testRanger.getId()).getBadge_number());
-  }
-
-  @Test
-  public void updateName_changesName_true(){
-    testRanger.updateName("Janet");
-    assertEquals("Janet", Ranger.findRanger(testRanger.getId()).getName());
+    assertEquals("mark.fisher3@pcc.edu",Ranger.findRanger(testRanger.getId()).getEmail());
   }
 
   @Test

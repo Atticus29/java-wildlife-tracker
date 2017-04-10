@@ -1,3 +1,6 @@
+<!-- ranger.vtl -->
+
+#if($ranger)
 <h4>
   <a href="/">Go Back to Home</a>
 </h4>
@@ -11,6 +14,7 @@
     <th>Animal's ID</th>
     <th>Remove</th>
   </tr>
+
   #foreach($sighting in $ranger.getSightings())
   <tr>
     <td>$sighting.getTime_sightedAsString()</td>
@@ -22,7 +26,17 @@
     </td>
     #end
   </tr>
+</tr>
+#end
 </table>
 #else
 <h4>No sightings recorded yet for this ranger</h4>
 #end
+#else
+<h3>No Ranger Goes By this ID yet</h3>
+<h4>
+  <a href="/">Go Back to Home</a>
+</h4>
+#end
+
+<!-- ranger.vtl -->

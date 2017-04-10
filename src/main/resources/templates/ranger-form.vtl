@@ -18,6 +18,11 @@
   <input type="number" name="ranger-badge" required value="$badge">
   <label for="ranger-email">Email Address:</label>
   <input type="email" name="ranger-email" required value="$email">
+  #if($ranger)
+    <input type="hidden" name="idIfEdit" value="$ranger.getId()">
+  #else
+    <input type="hidden" name="idIfEdit" value="new">
+  #end
   <button type="submit" name="button" class="btn btn-success">$buttonMessage</button>
 </form>
 
