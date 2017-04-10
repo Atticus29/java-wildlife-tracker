@@ -41,35 +41,13 @@ public class App {
 
     post("/sighting", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
-      String rangerName = request.queryParams("rangerName");
-      int animalIdSelected = Integer.parseInt(request.queryParams("endangeredAnimalSelected"));
-      String latLong = request.queryParams("latLong");
-      int rangerBadge = Integer.parseInt(request.queryParams("badge-num"));
-      try{
-        Sighting sighting = new Sighting(animalIdSelected, latLong, rangerName, rangerBadge);
-        sighting.save();
-        model.put("sighting", sighting);
-      } catch(RuntimeException e){
-        System.out.println(e.getClass().getName());
-        response.redirect("/error");
-        return null;
-      }
-      model.put("animals", EndangeredAnimal.allEndangered());
-      String animal = EndangeredAnimal.findEndangered(animalIdSelected).getName();
-      model.put("animal", animal);
-      model.put("template", "templates/success.vtl");
-      return new ModelAndView(model, layout);
-    }, new VelocityTemplateEngine());
-
-    post("/sighting", (request, response) -> {
-      Map<String, Object> model = new HashMap<String, Object>();
-      String animalType = request.queryParams("animal-type");
-      String rangerName = request.queryParams("rangerName");
       int animalIdSelected = Integer.parseInt(request.queryParams("animalSelected"));
-      String latLong = request.queryParams("latLong");
-      int rangerBadge = Integer.parseInt(request.queryParams("badge-num"));
+      String newAnimalType = request.queryParams("animal-type");
+      String newLocation = request.queryParams("latLong");
+      String rangerName = request.queryParams("rangerName");
+      int newRangerBadge = Integer.parseInt(request.queryParams("badge-num"));
       try{
-        Sighting sighting = new Sighting(animalIdSelected, animalType, latLong, rangerName, rangerBadge);
+        Sighting sighting = new Sighting(animalIdSelected, newAnimalType, newLocation, rangerName, newRangerBadge);
         sighting.save();
         model.put("sighting", sighting);
       } catch(RuntimeException e){
@@ -77,9 +55,15 @@ public class App {
         response.redirect("/error");
         return null;
       }
-      model.put("animals", Animal.allAnimal());
-      String animal = Animal.findAnimal(animalIdSelected).getName();
-      model.put("animal", animal);
+      Animal animal = Animal.findAnimal(animalIdSelected);
+      EndangeredAnimal endangeredAnimal = EndangeredAnimal.findEndangered(animalIdSelected);
+      if(animal != null){
+        model.put("animal", animal.getName());
+      } else{
+        model.put("animal", endangeredAnimal.getName());
+      }
+      // String animal = EndangeredAnimal.findEndangered(animalIdSelected).getName();
+      // model.put("animal", animal);
       model.put("template", "templates/success.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
