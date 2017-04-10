@@ -7,14 +7,16 @@ import java.util.Date;
 
 public class Sighting implements DatabaseManagement{
   private int animal_id;
+  private String type;
   private String location;
   private String ranger_name;
   private int id;
   private Timestamp time_sighted;
   private int ranger_badge;
 
-  public Sighting(int animal_id, String location, String ranger_name, int ranger_badge) {
+  public Sighting(int animal_id, String type, String location, String ranger_name, int ranger_badge) {
     this.animal_id = animal_id;
+    this.type = type;
     if(location.equals("") || location == null){
       throw new UnsupportedOperationException("location is empty!");
     }else{
@@ -35,6 +37,10 @@ public class Sighting implements DatabaseManagement{
 
   public int getId() {
     return id;
+  }
+
+  public String getType(){
+    return this.type;
   }
 
   public int getRanger_badge(){
@@ -67,27 +73,32 @@ public class Sighting implements DatabaseManagement{
       return false;
     } else {
       Sighting newSighting = (Sighting) otherSighting;
-      return this.getAnimalId() == (newSighting.getAnimalId()) && this.getLocation().equals(newSighting.getLocation()) && this.getRangerName().equals(newSighting.getRangerName());
+      return this.getAnimalId() == (newSighting.getAnimalId()) &&
+      this.getLocation().equals(newSighting.getLocation()) &&
+      this.getType().equals(newSighting.getType()) &&
+      this.getRangerName().equals(newSighting.getRangerName());
+      // doesn't work and I'm not sure why
     }
   }
 
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO sightings (time_sighted, animal_id, location, ranger_name, ranger_badge) VALUES (now(), :animal_id, :location, :ranger_name, :ranger_badge);";
+      String sql = "INSERT INTO sightings (time_sighted, animal_id, type, location, ranger_name, ranger_badge) VALUES (now(), :animal_id, :type, :location, :ranger_name, :ranger_badge);";
       this.id = (int) con.createQuery(sql, true)
-        .addParameter("animal_id", this.animal_id)
-        .addParameter("location", this.location)
-        .addParameter("ranger_name", this.ranger_name)
-        .addParameter("ranger_badge", this.ranger_badge)
-        .throwOnMappingFailure(false)
-        .executeUpdate()
-        .getKey();
+      .addParameter("animal_id", this.animal_id)
+      .addParameter("type", this.type)
+      .addParameter("location", this.location)
+      .addParameter("ranger_name", this.ranger_name)
+      .addParameter("ranger_badge", this.ranger_badge)
+      .throwOnMappingFailure(false)
+      .executeUpdate()
+      .getKey();
       String timeSql = "SELECT time_sighted FROM sightings WHERE id=:id;";
-        Timestamp sightTime = con.createQuery(timeSql)
-          .addParameter("id", this.id)
-          .throwOnMappingFailure(false)
-          .executeAndFetchFirst(Timestamp.class);
-        this.time_sighted = sightTime;
+      Timestamp sightTime = con.createQuery(timeSql)
+      .addParameter("id", this.id)
+      .throwOnMappingFailure(false)
+      .executeAndFetchFirst(Timestamp.class);
+      this.time_sighted = sightTime;
     }
   }
 
@@ -95,8 +106,8 @@ public class Sighting implements DatabaseManagement{
     try(Connection con = DB.sql2o.open()) {
       String sql = "SELECT * FROM sightings;";
       return con.createQuery(sql)
-        .throwOnMappingFailure(false)
-        .executeAndFetch(Sighting.class);
+      .throwOnMappingFailure(false)
+      .executeAndFetch(Sighting.class);
     }
   }
 
@@ -104,8 +115,8 @@ public class Sighting implements DatabaseManagement{
     try(Connection con = DB.sql2o.open()) {
       String sql = "SELECT * FROM sightings WHERE id=:id;";
       Sighting sighting = con.createQuery(sql)
-        .addParameter("id", id)
-        .executeAndFetchFirst(Sighting.class);
+      .addParameter("id", id)
+      .executeAndFetchFirst(Sighting.class);
       return sighting;
     } catch (IndexOutOfBoundsException exception) {
       return null;
@@ -116,16 +127,17 @@ public class Sighting implements DatabaseManagement{
     try(Connection con = DB.sql2o.open()) {
       String sql = "DELETE FROM sightings WHERE id=:id;";
       con.createQuery(sql)
-        .addParameter("id", this.id)
-        .executeUpdate();
+      .addParameter("id", this.id)
+      .executeUpdate();
     }
   }
 
-  public void update(String location, String rangerName, int badgeNum) {
+  public void update(String type, String location, String rangerName, int badgeNum) {
     if(Ranger.findByBadge(badgeNum) != null){
       try(Connection con = DB.sql2o.open()) {
-        String sql = "UPDATE sightings SET location=:location, ranger_name=:ranger_name, ranger_badge=:ranger_badge WHERE id=:id;";
+        String sql = "UPDATE sightings SET type =:type, location=:location, ranger_name=:ranger_name, ranger_badge=:ranger_badge WHERE id=:id;";
         con.createQuery(sql)
+        .addParameter("type", type)
         .addParameter("location", location)
         .addParameter("ranger_name", rangerName)
         .addParameter("ranger_badge", badgeNum)

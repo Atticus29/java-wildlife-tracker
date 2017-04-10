@@ -67,8 +67,8 @@ public class EndangeredAnimalTest {
 
   @Test
   public void getSightings_returnsAListOfSightings_true(){
-    Sighting testSighting = new Sighting(testEndangeredAnimal.getId(), "45.472428, -121.946466", "Ranger Avery", 466);
-    Sighting secondTestSighting = new Sighting (testEndangeredAnimal.getId(), "45.472428, -121.946466", "Ranger Reese", 899);
+    Sighting testSighting = new Sighting(testEndangeredAnimal.getId(), testEndangeredAnimal.getType(),  "45.472428, -121.946466", "Ranger Avery", 466);
+    Sighting secondTestSighting = new Sighting (testEndangeredAnimal.getId(), testEndangeredAnimal.getType(), "45.472428, -121.946466", "Ranger Reese", 899);
     testSighting.save();
     secondTestSighting.save();
     List<Sighting> allSightings = testEndangeredAnimal.getSightings();

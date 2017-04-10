@@ -81,8 +81,8 @@ public class AnimalTest {
 
   @Test
   public void getSightings_returnsAListOfSightings_true(){
-    Sighting testSighting = new Sighting(testAnimal.getId(), "45.472428, -121.946466", "Ranger Avery", 466);
-    Sighting secondTestSighting = new Sighting (testAnimal.getId(), "45.472428, -121.946466", "Ranger Reese", 899);
+    Sighting testSighting = new Sighting(testAnimal.getId(), testAnimal.getType(), "45.472428, -121.946466", "Ranger Avery", 466);
+    Sighting secondTestSighting = new Sighting (testAnimal.getId(), testAnimal.getType(), "45.472428, -121.946466", "Ranger Reese", 899);
     testSighting.save();
     secondTestSighting.save();
     List<Sighting> allSightings = testAnimal.getSightings();
