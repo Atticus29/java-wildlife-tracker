@@ -99,4 +99,17 @@ public class RangerTest {
   public void ranger_throwsExceptionIfBadgeAlreadyExists_true(){
     Ranger testRangerBadge = new Ranger("Perry", 321, "mark.fisher3@pcc.edu");
   }
+
+  @Test
+  public void getSightings_returnsListOfSightings_true(){
+    Animal testAnimal = new Animal("Deer");
+    testAnimal.save();
+    Sighting testSighting = new Sighting(testAnimal.getId(), testAnimal.getType(), "45.472428, -121.946466", "Ranger Avery", 321);
+    Sighting secondTestSighting = new Sighting (testAnimal.getId(), testAnimal.getType(), "45.472428, -121.946466", "Ranger Reese", 321);
+    testSighting.save();
+    secondTestSighting.save();
+    List<Sighting> allSightings = testRanger.getSightings();
+    assertEquals(2, allSightings.size());
+    assertEquals(secondTestSighting,allSightings.get(1));
+  }
 }
