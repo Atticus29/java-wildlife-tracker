@@ -62,8 +62,6 @@ public class App {
       } else{
         model.put("animal", endangeredAnimal.getName());
       }
-      // String animal = EndangeredAnimal.findEndangered(animalIdSelected).getName();
-      // model.put("animal", animal);
       model.put("template", "templates/success.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
@@ -221,16 +219,22 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    // get("/animal/:id/remove", (request, response) -> {
-    //   Map<String, Object> model = new HashMap<String, Object>();
-    //   Animal animal = Animal.findAnimal(Integer.parseInt(request.params("id")));
-    //   animal.delete();
-    //   model.put("animals", Animal.allAnimal());
-    //   model.put("endangeredAnimals", EndangeredAnimal.allEndangered());
-    //   model.put("sightings", Sighting.all());
-    //   model.put("template", "templates/index.vtl");
-    //   return new ModelAndView(model, layout);
-    // }, new VelocityTemplateEngine());
+    get("/animal/:id/remove", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      int currentId = Integer.parseInt(request.params(":id"));
+      Animal animal = Animal.findAnimal(currentId);
+      EndangeredAnimal endangeredAnimal = EndangeredAnimal.findEndangered(currentId);
+      if(animal != null){
+        animal.delete();
+      }else{
+        endangeredAnimal.delete();
+      }
+      model.put("animals", Animal.allAnimal());
+      model.put("endangeredAnimals", EndangeredAnimal.allEndangered());
+      model.put("sightings", Sighting.all());
+      model.put("template", "templates/index.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
 
     // get("/:animal_type/:id/remove", (request, response) -> {
     //   Map<String, Object> model = new HashMap<String, Object>();
