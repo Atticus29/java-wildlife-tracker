@@ -18,8 +18,15 @@ public class App {
       int newRangerBadge = Integer.parseInt(request.queryParams("ranger-badge"));
       String newRangerEmail = request.queryParams("ranger-email");
       if(mode.equals("new")){
-        Ranger newRanger = new Ranger(newRangerName, newRangerBadge, newRangerEmail);
-        newRanger.save();
+        try{
+          Ranger newRanger = new Ranger(newRangerName, newRangerBadge, newRangerEmail);
+          newRanger.save();
+        } catch(RuntimeException e){
+          System.out.println(e.getClass().getName());
+          response.redirect("/error");
+          return null;
+        }
+
       } else{
         int currentId = Integer.parseInt(mode);
         Ranger currentRanger = Ranger.findRanger(currentId);
@@ -214,7 +221,13 @@ public class App {
       String newRangerName = request.queryParams("rangerName");
       int newBadgeNumber = Integer.parseInt(request.queryParams("badge-num"));
       String newType = request.queryParams("animal-type");
-      currentSighting.update(newType, newLocation, newRangerName, newBadgeNumber);
+      try{
+        currentSighting.update(newType, newLocation, newRangerName, newBadgeNumber);
+      } catch(RuntimeException e){
+        System.out.println(e.getClass().getName());
+        response.redirect("/error");
+        return null;
+      }
       model.put("animals", Animal.allAnimal());
       model.put("rangers", Ranger.allRangers());
       model.put("endangeredAnimals", EndangeredAnimal.allEndangered());

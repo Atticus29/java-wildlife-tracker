@@ -12,8 +12,6 @@ If I had more time, here's what I would attack next:
 
 * Not pulling up ranger’s sightings in ranger page.
 
-* Add error handling if badge already exists. The throw has already been written, but the try catch has not.
-
 * Can’t update endangered animal to non-endangered or vice versa (have to just remove and create new one).
 
 ### Setup
