@@ -38,7 +38,7 @@
 <h3><a href="/animal/new">Add A New Animal to the System</a></h3>
 <hr>
 
-#if($editStatus)
+#if($editStatus == "true")
   #set($buttonMessage = "Update Report")
   #set($locationVal = $sighting.getLocation())
   #set($rangerNameVal = $sighting.getRangerName())
